@@ -13,9 +13,9 @@
 				<div class="form-group">
 					<label for="" class="control-label">Choose Activity</label>
 					<select class="form-control form-control-sm select2" name="activity">                    
-                    <option>-----</option>
-                    <option>Assignment</option>                    
-                    <option>Activity</option>
+                    <option value="noneSelected">-----</option>
+                    <option value="assign">Assignment</option>                    
+                    <option value="act">Activity</option>
                     </select>
 				</div>
 			</div>
@@ -125,31 +125,29 @@
 
 if(isset($_POST['save'])){
     
-        $name = $_POST['name'];
-        $manager = $_POST['manager_id'];
-        $start_date = $_POST['start_date'];
-        $end_date = $_POST['end_date'];
-        $faculty = $_POST['faculty'];
+    $name = $_POST['activity'];
+    $manager = $_POST['manager_id'];
+    $studentUser = $_POST['user_ids[]'];
+    $date_created = date("Y-m-d")." ".date("h:m:s");
+    $start_date = $_POST['start_date'];
+    $end_date = $_POST['end_date'];
 
-    foreach ($_POST['user_ids'] as $student)
-    {     
-    
-        
-
-        $sql="INSERT INTO `project_list`(`project_name`, `faculty`, `status`, `start_date`, `end_date`, `Supervisor`, `Student`) 
-		VALUES ('$name','$faculty','Pending','$start_date','$end_date','$manager','$student')"; 
+foreach ($_POST['user_ids'] as $student)
+{     
+    $sql="INSERT INTO `project_list`(`activity_name`, `lecture`,`student`,`status`,`date_created`,  `start_date`, `end_date`, `file`) 
+    VALUES ('$name','$manager','$studentUser','Pending','$date_created','$start_date','$end_date','$targetfolder')"; 
 
         // Make a refresh request here
         if (mysqli_query($conn, $sql)) {
                 echo "<script>";
-                echo "alert('project created successfully');";
-                echo 'window.location.href = "index.php?page=project_list";';
+                echo "alert('Task created successfully');";
+                echo 'window.location.href = "index.php?page=task_list";';
                 echo "</script>";
                 
         } else {
                 echo "Error: " . $sql . "<br>" . mysqli_error($conn);
                 echo "<script>";
-                echo "alert('project not created')";
+                echo "alert('Task not created')";
                 echo "</script>";
         }
 
