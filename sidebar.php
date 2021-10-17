@@ -121,6 +121,7 @@
               </li>
             </ul>
           </li>
+
 <!--Activities setup -->          
           <li class="nav-item">
                 <a href="./index.php?page=task_list" class="nav-link nav-task_list">
@@ -162,6 +163,8 @@
           </li>
         <?php endif; ?>
         </ul>
+        
+        <p style="padding-left:30px; color:white; opacity:0.8;"><img src="icons\community.png"> Community</p>
       </nav>
     </div>
   </aside>

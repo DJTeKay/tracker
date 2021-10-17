@@ -123,7 +123,7 @@
   <!-- Main Footer -->
   <footer class="main-footer">
     <strong>Copyright &copy; 2021 <a href="index.php"></a>.</strong>
-    International University of Management | Developed by Concatenators
+    Namibia Institute of Technology | Developed by Concatenators
     <div class="float-right d-none d-sm-inline-block">
       <b><?php echo $_SESSION['system']['name'] ?></b>
     </div>
