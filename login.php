@@ -131,7 +131,7 @@ $resultCheck = mysqli_num_rows($result);
 		echo "</script>";
       
       //header("location: home.php");
-      echo $_SESSION['login_user'] ." has loged in";
+      echo $_SESSION['login_user'] ." loged in";
   }
   } else {
   echo "Invalid Entrys";
