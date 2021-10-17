@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2020 at 08:37 AM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.2.33
+-- Generation Time: Oct 17, 2021 at 01:45 PM
+-- Server version: 10.4.17-MariaDB
+-- PHP Version: 7.4.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,8 +18,38 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `tms_db`
+-- Database: `concatenator_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `course_list`
+--
+
+CREATE TABLE `course_list` (
+  `id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `manager` text NOT NULL,
+  `student` text NOT NULL,
+  `date` text NOT NULL,
+  `time` text NOT NULL,
+  `faculty` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `faculty_list`
+--
+
+CREATE TABLE `faculty_list` (
+  `id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `dean` text NOT NULL,
+  `hod` text NOT NULL,
+  `date_created` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -29,23 +59,39 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `project_list` (
   `id` int(30) NOT NULL,
-  `name` varchar(200) NOT NULL,
-  `description` text NOT NULL,
-  `status` tinyint(2) NOT NULL,
-  `start_date` date NOT NULL,
-  `end_date` date NOT NULL,
-  `manager_id` int(30) NOT NULL,
-  `user_ids` text NOT NULL,
-  `date_created` datetime NOT NULL DEFAULT current_timestamp()
+  `project_name` varchar(200) NOT NULL,
+  `faculty` text NOT NULL,
+  `status` text NOT NULL,
+  `start_date` text NOT NULL,
+  `end_date` text NOT NULL,
+  `supervisor` text NOT NULL,
+  `student` text NOT NULL,
+  `date_created` text NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `students`
+--
+
+CREATE TABLE `students` (
+  `id` int(11) NOT NULL,
+  `firstname` text NOT NULL,
+  `lastname` text NOT NULL,
+  `std_number` text NOT NULL,
+  `study_year` text NOT NULL,
+  `faculty` text NOT NULL,
+  `course` text NOT NULL,
+  `email` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `project_list`
+-- Dumping data for table `students`
 --
 
-INSERT INTO `project_list` (`id`, `name`, `description`, `status`, `start_date`, `end_date`, `manager_id`, `user_ids`, `date_created`) VALUES
-(1, 'Sample Project', '								&lt;span style=&quot;color: rgb(0, 0, 0); font-family: &amp;quot;Open Sans&amp;quot;, Arial, sans-serif; font-size: 14px; text-align: justify;&quot;&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. In elementum, metus vitae malesuada mollis, urna nisi luctus ligula, vitae volutpat massa eros eu ligula. Nunc dui metus, iaculis id dolor non, luctus tristique libero. Aenean et sagittis sem. Nulla facilisi. Mauris at placerat augue. Nullam porttitor felis turpis, ac varius eros placerat et. Nunc ut enim scelerisque, porta lacus vitae, viverra justo. Nam mollis turpis nec dolor feugiat, sed bibendum velit placerat. Etiam in hendrerit leo. Nullam mollis lorem massa, sit amet tincidunt dolor lacinia at.&lt;/span&gt;							', 0, '2020-11-03', '2021-01-20', 2, '3,4,5', '2020-12-03 09:56:56'),
-(2, 'Sample Project 102', 'Sample Only', 0, '2020-12-02', '2020-12-31', 2, '3', '2020-12-03 13:51:54');
+INSERT INTO `students` (`id`, `firstname`, `lastname`, `std_number`, `study_year`, `faculty`, `course`, `email`) VALUES
+(1, 'Bank', 'Angola', '120002020', '4', '', '', 'isabella@bellaross.com');
 
 -- --------------------------------------------------------
 
@@ -67,7 +113,7 @@ CREATE TABLE `system_settings` (
 --
 
 INSERT INTO `system_settings` (`id`, `name`, `email`, `contact`, `address`, `cover_img`) VALUES
-(1, 'Task Management System', 'info@sample.comm', '+6948 8542 623', '2102  Caldwell Road, Rochester, New York, 14608', '');
+(1, 'Workload Management System', 'ium@ium.edu.na', '061 248 112', '21 - 31 Hercules Street, Windhoek, Khomas Region', '');
 
 -- --------------------------------------------------------
 
@@ -77,22 +123,15 @@ INSERT INTO `system_settings` (`id`, `name`, `email`, `contact`, `address`, `cov
 
 CREATE TABLE `task_list` (
   `id` int(30) NOT NULL,
-  `project_id` int(30) NOT NULL,
-  `task` varchar(200) NOT NULL,
-  `description` text NOT NULL,
-  `status` tinyint(4) NOT NULL,
-  `date_created` datetime NOT NULL DEFAULT current_timestamp()
+  `activity_name` text NOT NULL,
+  `lecture` text NOT NULL,
+  `student` text NOT NULL,
+  `status` text NOT NULL,
+  `date_created` text NOT NULL DEFAULT current_timestamp(),
+  `start_date` text NOT NULL,
+  `end_date` text NOT NULL,
+  `file` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `task_list`
---
-
-INSERT INTO `task_list` (`id`, `project_id`, `task`, `description`, `status`, `date_created`) VALUES
-(1, 1, 'Sample Task 1', '								&lt;span style=&quot;color: rgb(0, 0, 0); font-family: &amp;quot;Open Sans&amp;quot;, Arial, sans-serif; font-size: 14px; text-align: justify;&quot;&gt;Fusce ullamcorper mattis semper. Nunc vel risus ipsum. Sed maximus dapibus nisl non laoreet. Pellentesque quis mauris odio. Donec fermentum facilisis odio, sit amet aliquet purus scelerisque eget.&amp;nbsp;&lt;/span&gt;													', 3, '2020-12-03 11:08:58'),
-(2, 1, 'Sample Task 2', 'Sample Task 2							', 1, '2020-12-03 13:50:15'),
-(3, 2, 'Task Test', 'Sample', 1, '2020-12-03 13:52:25'),
-(4, 2, 'test 23', 'Sample test 23', 1, '2020-12-03 13:52:40');
 
 -- --------------------------------------------------------
 
@@ -116,11 +155,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`, `password`, `type`, `avatar`, `date_created`) VALUES
-(1, 'Administrator', '', 'admin@admin.com', '0192023a7bbd73250516f069df18b500', 1, 'no-image-available.png', '2020-11-26 10:57:04'),
-(2, 'John', 'Smith', 'jsmith@sample.com', '1254737c076cf867dc53d60a0364f38e', 2, '1606978560_avatar.jpg', '2020-12-03 09:26:03'),
-(3, 'Claire', 'Blake', 'cblake@sample.com', '4744ddea876b11dcb1d169fadf494418', 3, '1606958760_47446233-clean-noir-et-gradient-sombre-image-de-fond-abstrait-.jpg', '2020-12-03 09:26:42'),
-(4, 'George', 'Wilson', 'gwilson@sample.com', 'd40242fb23c45206fadee4e2418f274f', 3, '1606963560_avatar.jpg', '2020-12-03 10:46:41'),
-(5, 'Mike', 'Williams', 'mwilliams@sample.com', '3cc93e9a6741d8b40460457139cf8ced', 3, '1606963620_47446233-clean-noir-et-gradient-sombre-image-de-fond-abstrait-.jpg', '2020-12-03 10:47:06');
+(1, 'Administrator', '', 'admin@admin.com', '61646d696e313233', 1, 'no-image-available.png', '2020-11-26 10:57:04'),
+(36, 'Augusto', 'Domingos', 'vieira@gmail.com', '313233343536373839', 4, 'Products/p20211017072402pm.jpg', '2021-10-17 07:10:02');
 
 -- --------------------------------------------------------
 
@@ -143,23 +179,31 @@ CREATE TABLE `user_productivity` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `user_productivity`
---
-
-INSERT INTO `user_productivity` (`id`, `project_id`, `task_id`, `comment`, `subject`, `date`, `start_time`, `end_time`, `user_id`, `time_rendered`, `date_created`) VALUES
-(1, 1, 1, '							&lt;p&gt;Sample Progress&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Test 1&lt;/li&gt;&lt;li&gt;Test 2&lt;/li&gt;&lt;li&gt;Test 3&lt;/li&gt;&lt;/ul&gt;																			', 'Sample Progress', '2020-12-03', '08:00:00', '10:00:00', 1, 2, '2020-12-03 12:13:28'),
-(2, 1, 1, '							Sample Progress						', 'Sample Progress 2', '2020-12-03', '13:00:00', '14:00:00', 1, 1, '2020-12-03 13:48:28'),
-(3, 1, 2, '							Sample						', 'Test', '2020-12-03', '08:00:00', '09:00:00', 5, 1, '2020-12-03 13:57:22'),
-(4, 1, 2, 'asdasdasd', 'Sample Progress', '2020-12-02', '08:00:00', '10:00:00', 2, 2, '2020-12-03 14:36:30');
-
---
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `course_list`
+--
+ALTER TABLE `course_list`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `faculty_list`
+--
+ALTER TABLE `faculty_list`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `project_list`
 --
 ALTER TABLE `project_list`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `students`
+--
+ALTER TABLE `students`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -191,10 +235,28 @@ ALTER TABLE `user_productivity`
 --
 
 --
+-- AUTO_INCREMENT for table `course_list`
+--
+ALTER TABLE `course_list`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `faculty_list`
+--
+ALTER TABLE `faculty_list`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
 -- AUTO_INCREMENT for table `project_list`
 --
 ALTER TABLE `project_list`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `students`
+--
+ALTER TABLE `students`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `system_settings`
@@ -206,13 +268,13 @@ ALTER TABLE `system_settings`
 -- AUTO_INCREMENT for table `task_list`
 --
 ALTER TABLE `task_list`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `user_productivity`

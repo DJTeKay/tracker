@@ -3,7 +3,7 @@
 <div class="col-lg-12">
 	<div class="card card-outline card-primary">
 		<div class="card-body">
-			<form action="index.php?page=new_project" method="post" id="manage-project">
+			<form action="index.php?page=new_task" method="post" id="manage-project">
 
         <input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
 
@@ -13,9 +13,10 @@
 				<div class="form-group">
 					<label for="" class="control-label">Choose Activity</label>
 					<select class="form-control form-control-sm select2" name="activity">                    
-                    <option value="noneSelected">-----</option>
+                    <option value="noneSelected">--none---</option>
                     <option value="assign">Assignment</option>                    
-                    <option value="act">Activity</option>
+                    <option value="act">Class Activity</option>                    
+                    <option value="act">Class Exercice</option>
                     </select>
 				</div>
 			</div>
@@ -75,7 +76,8 @@
             <div class="col-md-6">
                     <div class="file_upload">
                         <form action="/action_page.php">
-                        <input type="file" name="file" size="50" />
+                        <input type="file"  accept="image/*"  class="custom-file-input" id="customFile" name="img" onchange="displayImg(this,$(this))">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
                         </form>
                     </div>
             </div>
@@ -124,18 +126,27 @@
 <?php
 
 if(isset($_POST['save'])){
+
+    $img = $_FILES['file'];
+	$fileName = $_FILES['file']['name'];
+	$fileLocation = $_FILES['file']['tmp_name'];
+	$fileDestination = "Files/".$fileName;
+	move_uploaded_file($fileLocation,$fileDestination);
+	$targetfolder = "Files/p".date("Ymd").date("hisa").".jpg";
+	rename( $fileDestination,$pic ) ;
     
     $name = $_POST['activity'];
     $manager = $_POST['manager_id'];
-    $studentUser = $_POST['user_ids[]'];
     $date_created = date("Y-m-d")." ".date("h:m:s");
     $start_date = $_POST['start_date'];
     $end_date = $_POST['end_date'];
 
-foreach ($_POST['user_ids'] as $student)
-{     
-    $sql="INSERT INTO `project_list`(`activity_name`, `lecture`,`student`,`status`,`date_created`,  `start_date`, `end_date`, `file`) 
-    VALUES ('$name','$manager','$studentUser','Pending','$date_created','$start_date','$end_date','$targetfolder')"; 
+    foreach ($_POST['user_ids'] as $student)
+    {     
+    
+            
+    $sql="INSERT INTO `task_list`(`activity_name`, `lecture`,`student`,`status`,`date_created`,  `start_date`, `end_date`, `file`) 
+    VALUES ('$name','$manager','$student','Pending','$date_created','$start_date','$end_date','$targetfolder')"; 
 
         // Make a refresh request here
         if (mysqli_query($conn, $sql)) {
@@ -155,39 +166,4 @@ foreach ($_POST['user_ids'] as $student)
 	 
 }
 
-?>
-<?php
-if(isset($_POST['submit'])){
- $targetfolder = "";
-
- $targetfolder = $targetfolder . basename( $_FILES['file']['name']) ;
-
- $ok=1;
-
-$file_type=$_FILES['file']['type'];
-
-if ($file_type=="application/pdf" || $file_type=="image/gif" || $file_type=="image/jpeg") {
-
- if(move_uploaded_file($_FILES['file']['tmp_name'], $targetfolder))
-
- {
-
- echo "The file ". basename( $_FILES['file']['name']). " is uploaded";
-
- }
-
- else {
-
- echo "Problem uploading file";
-
- }
-
-}
-
-else {
-
- echo "You may only upload PDFs, JPEGs or GIF files.<br>";
-
-}
-}
 ?>

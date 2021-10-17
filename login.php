@@ -16,11 +16,16 @@ include('./db_connect.php');
   ob_end_flush();
 ?>
 <?php include 'header.php' ?>
-<body class="hold-transition login-page bg-black">
+<body class="hold-transition login-page bg-black" id="back">
+      <img class="back" src="nust.jpg"> 
+      <br><br><br><br><br>
 <div class="login-box">
   <div class="login-logo">
-    <a href="#" class="text-white"><b><?php echo $_SESSION['system']['name'] ?></b></a>
+    <a href="#" class="text-white">
+      <b><?php echo $_SESSION['system']['name'] ?></b>
+    </a>
   </div>
+ 
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">

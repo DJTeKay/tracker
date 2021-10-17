@@ -133,6 +133,23 @@ if(isset($_POST['save'])){
                 echo "</script>";
         }
 
+        //add to work load list	
+			
+		$sql="UPDATE `workload` SET  `projects` = (`projects` + 0), `students` = (`students` + 1),
+        `available` = ( `available` - 1)  where `email` = $manager ";
+
+        if (mysqli_query($conn, $sql)) {
+            echo "<script>";
+            echo "alert('workload successfully');";
+            echo 'window.location.href = "index.php?page=user_list";';
+            echo "</script>";
+        } else {
+            echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+            echo "<script>";
+            echo "alert('workload not successful')";
+            echo "</script>";
+        }
+
     }	
 	 
 }

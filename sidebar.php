@@ -1,6 +1,6 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <div class="dropdown">
-   	<a href="./" class="brand-link">
+  
         <?php 
 
         $user = $_SESSION['login_id'] ;
@@ -29,7 +29,7 @@
           }
         ?>
 
-    </a>
+    
         </br></br>
     </div>
     <div class="sidebar pb-4 mb-4">

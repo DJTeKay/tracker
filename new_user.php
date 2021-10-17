@@ -266,6 +266,7 @@ if(isset($_POST['save_user'])){
 	$password = bin2hex($_POST['password']);
 	$type = $_POST['type'];
 	$date_created = date("Y-m-d")." ".date("h:m:s");
+	
 
 
 
@@ -286,11 +287,12 @@ if(isset($_POST['save_user'])){
         }	
 	}
 
-	if($type=="5"){
+	if($_POST['type']=="5"){
+
 		$std = $_POST['std'];
 		$yof = $_POST['yos'];
 		
-		$sql="INSERT INTO `students`(`id`, `firstname`, `lastname`, `std_number`, `study_year`, `faculty`, `course`, `email`)
+		$sql="INSERT INTO `students`(`firstname`, `lastname`, `std_number`, `study_year`, `faculty`, `course`, `email`)
 		VALUES ('$firstname','$lastname','$std','$yof','','','$email')";
 
 		if (mysqli_query($conn, $sql)) {
@@ -305,5 +307,44 @@ if(isset($_POST['save_user'])){
 			echo "</script>";
 		}	
 		
-	}
+	}	
+	
+	if($_POST['type']=="4"){
+
+		$staff = $_POST['staff'];
+		
+		$sql="INSERT INTO `lecturer`(`staff_number`, `firstname`, `lastname`)
+		VALUES ('$staff'.'$firstname','$lastname')";
+
+		if (mysqli_query($conn, $sql)) {
+			echo "<script>";
+			echo "alert('User record created successfully');";
+			echo 'window.location.href = "index.php?page=user_list";';
+			echo "</script>";
+		} else {
+			echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+			echo "<script>";
+			echo "alert('User not created')";
+			echo "</script>";
+		}
+		
+		//add to work load list	
+		$fullname = $firstname." ".$lastname;	
+		$sql="INSERT INTO `workload`(`lecturer_name`, `email`, `faculty`, `courses`, `projects`, `students`, `max`, `min`, `available`)
+		 VALUES ('$fullname','$email','0','0','0','0','9000','1000','9000')";
+
+		if (mysqli_query($conn, $sql)) {
+			echo "<script>";
+			echo "alert('Staff record created successfully');";
+			echo 'window.location.href = "index.php?page=user_list";';
+			echo "</script>";
+		} else {
+			echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+			echo "<script>";
+			echo "alert('Staff not created')";
+			echo "</script>";
+		}	
+		
+	}	
+	
 ?>

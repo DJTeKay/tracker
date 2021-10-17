@@ -64,20 +64,7 @@ if($_SESSION['login_type'] != 1)
                 }
                 $qry = $conn->query("SELECT * FROM project_list order by project_name asc");
                 while($row= $qry->fetch_assoc()):
-                  $prog= 0;
-                $tprog = $conn->query("SELECT * FROM task_list where project_id = {$row['id']}")->num_rows;
-                $cprog = $conn->query("SELECT * FROM task_list where project_id = {$row['id']} and status = 3")->num_rows;
-                $prog = $tprog > 0 ? ($cprog/$tprog) * 100 : 0;
-                $prog = $prog > 0 ?  number_format($prog,2) : $prog;
-                $prod = $conn->query("SELECT * FROM user_productivity where project_id = {$row['id']}")->num_rows;
-                if($row['status'] == 0 && strtotime(date('Y-m-d')) >= strtotime($row['start_date'])):
-                if($prod  > 0  || $cprog > 0)
-                  $row['status'] = 2;
-                else
-                  $row['status'] = 1;
-                elseif($row['status'] == 0 && strtotime(date('Y-m-d')) > strtotime($row['end_date'])):
-                $row['status'] = 4;
-                endif;
+               
                   ?>
                   <tr>
                       <td>
@@ -93,30 +80,12 @@ if($_SESSION['login_type'] != 1)
                           </small>
                       </td>
                       <td class="project_progress">
-                          <div class="progress progress-sm">
-                              <div class="progress-bar bg-green" role="progressbar" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $prog ?>%">
-                              </div>
-                          </div>
-                          <small>
-                              <?php echo $prog ?>% Complete
-                          </small>
+
+                         progress
+
                       </td>
                       <td class="project-state">
-                          <?php
-                            if($stat[$row['status']] =='Pending'){
-                              echo "<span class='badge badge-secondary'>{$stat[$row['status']]}</span>";
-                            }elseif($stat[$row['status']] =='Started'){
-                              echo "<span class='badge badge-primary'>{$stat[$row['status']]}</span>";
-                            }elseif($stat[$row['status']] =='On-Progress'){
-                              echo "<span class='badge badge-info'>{$stat[$row['status']]}</span>";
-                            }elseif($stat[$row['status']] =='On-Hold'){
-                              echo "<span class='badge badge-warning'>{$stat[$row['status']]}</span>";
-                            }elseif($stat[$row['status']] =='Over Due'){
-                              echo "<span class='badge badge-danger'>{$stat[$row['status']]}</span>";
-                            }elseif($stat[$row['status']] =='Done'){
-                              echo "<span class='badge badge-success'>{$stat[$row['status']]}</span>";
-                            }
-                          ?>
+                       state
                       </td>
                       <td>
                         <a class="btn btn-primary btn-sm" href="./index.php?page=view_project&id=<?php echo $row['id'] ?>">
@@ -135,9 +104,28 @@ if($_SESSION['login_type'] != 1)
         </div>
         <div class="col-md-4">
           <div class="row">
+
+<!--workload charts-->
+<div class="col-12 col-sm-6 col-md-12">
+                    <div class="small-box bg-light shadow-sm border">
+                      <div class="inner">
+
+                      
+                      <?php include "overall_chart_lecturer.php" ?>
+
+
+                      </div>
+
+                      <div class="icon">
+                      <i class="fa fa-tasks"></i>
+                      </div>
+                    </div>
+                </div>
+
           <div class="col-12 col-sm-6 col-md-12">
             <div class="small-box bg-light shadow-sm border">
               <div class="inner">
+
                 <h3><?php echo $conn->query("SELECT * FROM project_list $where")->num_rows; ?></h3>
 
                 <p>Total Projects</p>
@@ -147,17 +135,64 @@ if($_SESSION['login_type'] != 1)
               </div>
             </div>
           </div>
-           <div class="col-12 col-sm-6 col-md-12">
-            <div class="small-box bg-light shadow-sm border">
-              <div class="inner">
-                <h3><?php echo "8"?></h3>
-                <p>Total Tasks</p>
-              </div>
-              <div class="icon">
-                <i class="fa fa-tasks"></i>
-              </div>
-            </div>
-          </div>
+
+                <div class="col-12 col-sm-6 col-md-12">
+                    <div class="small-box bg-light shadow-sm border">
+                      <div class="inner">
+
+
+                      <h3><?php echo $conn->query("SELECT * FROM task_list $where")->num_rows; ?></h3>
+
+                      <p>Total Tasks</p>
+
+
+
+                      </div>
+
+                      <div class="icon">
+                      <i class="fa fa-tasks"></i>
+                      </div>
+                    </div>
+                </div>
+
+<!--workload charts-->
+<div class="col-12 col-sm-6 col-md-12">
+                    <div class="small-box bg-light shadow-sm border">
+                      <div class="inner">
+
+
+                      <?php include "overall_chart.php" ?>
+
+
+                      </div>
+
+                      <div class="icon">
+                      <i class="fa fa-tasks"></i>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-12">
+                    <div class="small-box bg-light shadow-sm border">
+                      <div class="inner">
+
+
+                      <h3><?php echo $conn->query("SELECT * FROM users")->num_rows; ?></h3>
+
+                      <p>Total User</p>
+
+
+
+                      </div>
+
+                      <div class="icon">
+                      <i class="fa fa-tasks"></i>
+                      </div>
+                    </div>
+                </div>
+
+
+
+                
       </div>
         </div>
       </div>
